@@ -235,13 +235,13 @@ function an_nexus_delete()
                 an_enable_form();
 
                 if (answer_get_all['code'] == 0) {
-                    var options = '<option value="0" onclick="an_view_update()">Новый</option>';
+                    var options = '<option value="0" onclick="an_view_update()">Новый</option>'+"\n";
 
                     var ids = Object.keys(answer_get_all['data']);
 
                     for (let i = 0; i < ids.length; i++) {
 
-                        options = options+'<option value="'+ids[i]+'" onclick="an_view_update()">'+ids[i]+'</option>';
+                        options = options+'<option value="'+ids[i]+'" onclick="an_view_update()">'+ids[i]+'</option>'+"\n";
                     }
 
                     id_select.innerHTML = options;
