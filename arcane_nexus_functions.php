@@ -75,15 +75,20 @@ function an_universal()
 function an_nexus_execute($content)
 {
 
+    global $model;
     global $values;
 
     if (file_exists(plugin_dir_path(__FILE__).'code/'.$values['file'].'.php')) {
 
-        ob_start();
+        if ($values['position'] == 'before' || $values['position'] == 'replace' || $values['position'] == 'after') {
 
-        require_once 'code/'.$values['file'].'.php';
+            ob_start();
 
-        $nexus_output = ob_get_clean();
+            require_once 'code/'.$values['file'].'.php';
+
+            $nexus_output = ob_get_clean();
+
+        }
 
         switch ($values['position']) {
             case 'before':

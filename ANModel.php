@@ -53,7 +53,7 @@ class ANModel
 
         $key = '';
 
-        for ($i = 0; $i <= $length; $i++) {
+        for ($i = 0; $i < $length; $i++) {
 
             $key .= $band[rand(0, count($band) - 1)];
 
