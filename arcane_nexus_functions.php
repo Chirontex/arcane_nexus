@@ -22,11 +22,11 @@ function an_universal()
 
     if (isset($_POST['arcane_nexus_action'])) {
 
-        global $model;
+        global $anmodel;
 
         switch ($_POST['arcane_nexus_action']) {
             case 'get_all':
-                $get_nexus = $model->get_nexus();
+                $get_nexus = $anmodel->get_nexus();
 
                 if ($get_nexus) $result = ['code' => '0', 'message' => 'Success.', 'data' => $get_nexus];
                 else $result = ['code' => '1', 'message' => 'The answer is empty.'];
@@ -35,7 +35,7 @@ function an_universal()
             case 'get':
                 if (isset($_POST['arcane_nexus_id'])) {
 
-                    $get_nexus = $model->get_nexus((int)$_POST['arcane_nexus_id']);
+                    $get_nexus = $anmodel->get_nexus((int)$_POST['arcane_nexus_id']);
 
                     if ($get_nexus) $result = ['code' => '0', 'message' => 'Success.', 'data' => $get_nexus];
                     else $result = ['code' => '1', 'message' => 'The answer is empty.'];
@@ -46,9 +46,9 @@ function an_universal()
             case 'delete':
                 if (isset($_POST['arcane_nexus_id'])) {
 
-                    $get_nexus = $model->get_nexus((int)$_POST['arcane_nexus_id']);
+                    $get_nexus = $anmodel->get_nexus((int)$_POST['arcane_nexus_id']);
 
-                    $delete_nexus = $model->delete_nexus((int)$_POST['arcane_nexus_id']);
+                    $delete_nexus = $anmodel->delete_nexus((int)$_POST['arcane_nexus_id']);
 
                     if ($get_nexus && $delete_nexus) {
 
@@ -75,7 +75,7 @@ function an_universal()
 function an_nexus_execute($content)
 {
 
-    global $model;
+    global $anmodel;
     global $values;
 
     if (file_exists(plugin_dir_path(__FILE__).'code/'.$values['file'].'.php')) {

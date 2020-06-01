@@ -3,7 +3,7 @@
  * Plugin Name: Arcane Nexus
  * Plugin URI: https://github.com/dmitryshumilin/arcane_nexus
  * Description: Плагин, расширяющий возможности PHP-разработчиков в работе с WordPress.
- * Version: 1.1
+ * Version: 1.2
  * Author: Дмитрий Шумилин
  * Author URI: mailto://dmitri.shumilinn@yandex.ru
  */
@@ -30,7 +30,7 @@ define('ARCANE_NEXUS_DATABASE', null);
 define('ARCANE_NEXUS_DIRECTORY', substr(plugin_dir_path(__FILE__), strpos(plugin_dir_path(__FILE__), 'plugins') + 8, -1));
 define('ARCANE_NEXUS_HTACCESS_PATH', substr(plugin_dir_path(__FILE__), 0, strpos(plugin_dir_path(__FILE__), 'wp-content')));
 
-$model = new ANModel(ARCANE_NEXUS_DATABASE);
+$anmodel = new ANModel(ARCANE_NEXUS_DATABASE);
 
 if (!file_exists(plugin_dir_path(__FILE__).'_css/bootstrap.min.css')) file_put_contents(plugin_dir_path(__FILE__).'_css/bootstrap.min.css', file_get_contents('https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css'));
 
@@ -44,9 +44,9 @@ add_action('admin_menu', function() {
 
 if (!file_exists(plugin_dir_path(__FILE__).'key')) {
 
-    if ($model->installation()) {
+    if ($anmodel->installation()) {
 
-        file_put_contents(plugin_dir_path(__FILE__).'key', $model->generate_random_string());
+        file_put_contents(plugin_dir_path(__FILE__).'key', $anmodel->generate_random_string());
 
         if (!file_exists(plugin_dir_path(__FILE__).'code')) mkdir(plugin_dir_path(__FILE__).'code');
 
@@ -54,7 +54,7 @@ if (!file_exists(plugin_dir_path(__FILE__).'key')) {
 
 }
 
-$generate_htaccess = $model->generate_htaccess(ARCANE_NEXUS_DIRECTORY);
+$generate_htaccess = $anmodel->generate_htaccess(ARCANE_NEXUS_DIRECTORY);
 
 if (file_exists(ARCANE_NEXUS_HTACCESS_PATH.'.htaccess')) {
 
@@ -82,7 +82,7 @@ add_action('rest_api_init', function() {
 
 });
 
-$nexus_array = $model->get_nexus();
+$nexus_array = $anmodel->get_nexus();
 
 if (!empty($nexus_array)) {
 

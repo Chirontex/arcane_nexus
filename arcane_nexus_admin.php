@@ -51,7 +51,7 @@ if (password_verify(ARCANE_NEXUS_PASSWORD, $_POST['arcane_nexus_hash']) && isset
 
                 $filename_length = 10;
 
-                $arcane_nexus_filename = $model->generate_random_string($filename_length);
+                $arcane_nexus_filename = $anmodel->generate_random_string($filename_length);
 
                 $filename_length += 1;
 
@@ -59,7 +59,7 @@ if (password_verify(ARCANE_NEXUS_PASSWORD, $_POST['arcane_nexus_hash']) && isset
 
             if (move_uploaded_file($_FILES['arcane_nexus_file']['tmp_name'], plugin_dir_path(__FILE__).'code/'.$arcane_nexus_filename.'.php')) {
 
-                if ($model->insert_nexus($_POST['arcane_nexus_uri'], $arcane_nexus_filename, $_POST['arcane_nexus_position'])) $arcane_nexus_status = '<p class="an_text_green">Скрипт успешно добавлен к странице!</p>';
+                if ($anmodel->insert_nexus($_POST['arcane_nexus_uri'], $arcane_nexus_filename, $_POST['arcane_nexus_position'])) $arcane_nexus_status = '<p class="an_text_green">Скрипт успешно добавлен к странице!</p>';
                 else $arcane_nexus_status = '<p class="an_text_red">Не удалось добавить скрипт к странице! Скорее всего, к странице с указанным URI уже добавлен другой скрипт.</p>';
 
             } else $arcane_nexus_status = '<p class="an_text_red">Не удалось загрузить файл скрипта!</p>';
@@ -74,7 +74,7 @@ if (password_verify(ARCANE_NEXUS_PASSWORD, $_POST['arcane_nexus_hash']) && isset
 
                 $filename_length = 10;
 
-                $arcane_nexus_filename = $model->generate_random_string($filename_length);
+                $arcane_nexus_filename = $anmodel->generate_random_string($filename_length);
 
                 $filename_length += 1;
 
@@ -82,7 +82,7 @@ if (password_verify(ARCANE_NEXUS_PASSWORD, $_POST['arcane_nexus_hash']) && isset
 
             if (move_uploaded_file($_FILES['arcane_nexus_file']['tmp_name'], plugin_dir_path(__FILE__).'code/'.$arcane_nexus_filename.'.php')) {
 
-                if ($model->update_nexus((int)$_POST['arcane_nexus_id'], $_POST['arcane_nexus_uri'], $arcane_nexus_filename, $_POST['arcane_nexus_position'])) {
+                if ($anmodel->update_nexus((int)$_POST['arcane_nexus_id'], $_POST['arcane_nexus_uri'], $arcane_nexus_filename, $_POST['arcane_nexus_position'])) {
 
                     unlink(plugin_dir_path(__FILE__).'code/'.$nexus_array[$_POST['arcane_nexus_id']]['file'].'.php');
                     
@@ -94,7 +94,7 @@ if (password_verify(ARCANE_NEXUS_PASSWORD, $_POST['arcane_nexus_hash']) && isset
 
         } else {
 
-            if ($model->update_nexus((int)$_POST['arcane_nexus_id'], $_POST['arcane_nexus_uri'], $nexus_array[$_POST['arcane_nexus_id']]['file'], $_POST['arcane_nexus_position'])) $arcane_nexus_status = '<p class="an_text_green">Настройки добавления скрипта к странице успешно изменены!</p>';
+            if ($anmodel->update_nexus((int)$_POST['arcane_nexus_id'], $_POST['arcane_nexus_uri'], $nexus_array[$_POST['arcane_nexus_id']]['file'], $_POST['arcane_nexus_position'])) $arcane_nexus_status = '<p class="an_text_green">Настройки добавления скрипта к странице успешно изменены!</p>';
             else $arcane_nexus_status = '<p class="an_text_red">Не удалось изменить настройки добавления скрипта к странице! Меняя URI, пожалуйста, убедитесь, что страница с данным URI не имеет других прикреплённых скриптов.</p>';
 
         }
@@ -103,7 +103,7 @@ if (password_verify(ARCANE_NEXUS_PASSWORD, $_POST['arcane_nexus_hash']) && isset
 
 }
 
-$nexus_array = $model->get_nexus();
+$nexus_array = $anmodel->get_nexus();
 
 ?>
 <div class="container-fluid">
