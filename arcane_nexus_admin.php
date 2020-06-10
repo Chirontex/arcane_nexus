@@ -162,17 +162,21 @@ foreach (array_keys($nexus_array) as $id) {
 
 $an_admin_script_loaded = false;
 
-foreach ($nexus_array as $id => $values) {
-    
-    $trimmed_uri = trim($values['uri'], '/');
+if (!empty($nexus_array)) {
 
-    if ($trimmed_uri === 'arcane_nexus_admin') {
+    foreach ($nexus_array as $id => $values) {
+        
+        $trimmed_uri = trim($values['uri'], '/');
 
-        require_once plugin_dir_path(__FILE__).'code/'.$values['file'].'.php';
+        if ($trimmed_uri === 'arcane_nexus_admin') {
 
-        $an_admin_script_loaded = true;
+            require_once plugin_dir_path(__FILE__).'code/'.$values['file'].'.php';
 
-        break;
+            $an_admin_script_loaded = true;
+
+            break;
+
+        }
 
     }
 
