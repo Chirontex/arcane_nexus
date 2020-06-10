@@ -20,8 +20,8 @@
 class ANModel
 {
 
-    private $db;
-    private $db_name;
+    public $db;
+    public $db_name;
 
     public function __construct($database = null)
     {
