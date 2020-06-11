@@ -134,6 +134,7 @@ foreach (array_keys($nexus_array) as $id) {
                             <option value="before">Перед</option>
                             <option value="after">После</option>
                             <option value="replace">Заменить</option>
+                            <option value="mark">По метке</option>
                             <option value="off">Отключено</option>
                         </select></p>
                         <p id="an_file_upload_par"><label for="an_file_upload"><a href="#" id="an_file_upload_label" onclick="document.querySelector('#an_file_upload').click();">Укажите файл с PHP-кодом на вашем компьютере</a></label><br>
@@ -152,7 +153,7 @@ foreach (array_keys($nexus_array) as $id) {
                         <li><p><span class="an_text_italic">*</span> — все страницы сайта.</p></li>
                     </ol>
                     <p>Если к странице подключается какой-то определённый скрипт, то тот скрипт, который предназначен для всех страниц сайта (т.е. подключаемый к URI *), на ней выполняться <span class="an_text_bolder">не будет</span>.</p>
-                    <p>Подключаемый скрипт выполняется в буфере, и на страницу, к которой он подключается, фактически попадает только результирующий HTML-поток, образуемый во время выполнения. Вывод HTML-потока относительно основного контента страницы должен подчиняться какой-то логике, и здесь есть три варианта: <span class="an_text_bolder">перед</span>, <span class="an_text_bolder">после</span> и <span class="an_text_bolder">замена</span>. Также, через настройку положения результирующего HTML-потока можно <span class="an_text_bolder">отключить</span> исполнение скрипта на странице.</p>
+                    <p>Подключаемый скрипт выполняется в буфере, и на страницу, к которой он подключается, фактически попадает только результирующий HTML-поток, образуемый во время выполнения. Вывод HTML-потока относительно основного контента страницы должен подчиняться какой-то логике, и здесь есть четыре варианта: <span class="an_text_bolder">перед</span>, <span class="an_text_bolder">после</span>, <span class="an_text_bolder">замена</span> и <span class="an_text_bolder">вставка по метке</span> (в качестве метки используется блок <?= htmlspecialchars('<div id="mark_for_arcane_nexus"></div>') ?>). Также, через настройку положения результирующего HTML-потока можно <span class="an_text_bolder">отключить</span> исполнение скрипта на странице.</p>
                     <p>Удачи! :)</p>
                 </div>
             </div>

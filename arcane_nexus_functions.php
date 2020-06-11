@@ -80,7 +80,7 @@ function an_nexus_execute($content)
 
     if (file_exists(plugin_dir_path(__FILE__).'code/'.$values['file'].'.php')) {
 
-        if ($values['position'] == 'before' || $values['position'] == 'replace' || $values['position'] == 'after') {
+        if ($values['position'] != 'off') {
 
             ob_start();
 
@@ -101,6 +101,13 @@ function an_nexus_execute($content)
     
             case 'after':
                 $result = $content.$nexus_output;
+                break;
+
+            case 'mark':
+                $mark = '<div id="mark_for_arcane_nexus"></div>';
+
+                if (strpos($content, $mark) !== false) $result = str_replace($mark, $nexus_output, $content);
+                else $result = $content;
                 break;
                         
             default:
