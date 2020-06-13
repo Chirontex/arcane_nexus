@@ -93,7 +93,7 @@ class ANModel
     public function tables_create()
     {
 
-        $query = $this->db->query("CREATE TABLE `ARCANE_NEXUS_chain` (`id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT, `uri` VARCHAR (50) NOT NULL, `file` VARCHAR(25) NOT NULL, `position` VARCHAR(10) NOT NULL, PRIMARY KEY (`id`), UNIQUE INDEX `uri` (`uri`)) COLLATE='utf8_general_ci' AUTO_INCREMENT=0");
+        $query = $this->db->query("CREATE TABLE `ARCANE_NEXUS_chain` (`id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT, `uri` VARCHAR (50) NOT NULL, `file` VARCHAR(25) NOT NULL, `position` VARCHAR(10) NOT NULL, `buffer` VARCHAR(5) NOT NULL, PRIMARY KEY (`id`), UNIQUE INDEX `uri` (`uri`)) COLLATE='utf8_general_ci' AUTO_INCREMENT=0");
 
         return $query;
 
@@ -117,7 +117,8 @@ class ANModel
                 $result[$row['id']] = [
                     'uri' => stripslashes($row['uri']),
                     'file' => $row['file'],
-                    'position' => $row['position']
+                    'position' => $row['position'],
+                    'buffer' => $row['buffer']
                 ];
 
             }
@@ -128,20 +129,20 @@ class ANModel
 
     }
 
-    public function update_nexus(int $id, string $uri, string $file, string $position)
+    public function update_nexus(int $id, string $uri, string $file, string $position, string $buffer)
     {
 
-        if ($id > 0) $result = $this->db->query($this->db->prepare("UPDATE ".$this->db_name.".ARCANE_NEXUS_chain AS t SET t.uri = %s, t.file = %s, t.position = %s WHERE t.id = %d", addslashes(trim($uri)), $file, $position, $id));
+        if ($id > 0) $result = $this->db->query($this->db->prepare("UPDATE ".$this->db_name.".ARCANE_NEXUS_chain AS t SET t.uri = %s, t.file = %s, t.position = %s, t.buffer = %s WHERE t.id = %d", addslashes(trim($uri)), $file, $position, $buffer, $id));
         else $result = false;
 
         return $result;
 
     }
 
-    public function insert_nexus(string $uri, string $file, string $position)
+    public function insert_nexus(string $uri, string $file, string $position, string $buffer)
     {
 
-        $result = $this->db->query($this->db->prepare("INSERT INTO ".$this->db_name.".ARCANE_NEXUS_chain (`uri`, `file`, `position`) VALUES (%s, %s, %s)", addslashes(trim($uri)), $file, $position));
+        $result = $this->db->query($this->db->prepare("INSERT INTO ".$this->db_name.".ARCANE_NEXUS_chain (`uri`, `file`, `position`, `buffer`) VALUES (%s, %s, %s, %s)", addslashes(trim($uri)), $file, $position, $buffer));
 
         return $result;
 

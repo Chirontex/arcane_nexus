@@ -41,7 +41,7 @@ var hash_urlencoded = '<?= urlencode($arcane_nexus_hash) ?>';
 
 $arcane_nexus_status = '';
 
-if (password_verify(ARCANE_NEXUS_PASSWORD, $_POST['arcane_nexus_hash']) && isset($_POST['arcane_nexus_id']) && isset($_POST['arcane_nexus_uri']) && isset($_POST['arcane_nexus_position'])) {
+if (password_verify(ARCANE_NEXUS_PASSWORD, $_POST['arcane_nexus_hash']) && isset($_POST['arcane_nexus_id']) && isset($_POST['arcane_nexus_uri']) && isset($_POST['arcane_nexus_position']) && isset($_POST['arcane_nexus_buffer'])) {
 
     if ((int)$_POST['arcane_nexus_id'] === 0) {
 
@@ -59,7 +59,7 @@ if (password_verify(ARCANE_NEXUS_PASSWORD, $_POST['arcane_nexus_hash']) && isset
 
             if (move_uploaded_file($_FILES['arcane_nexus_file']['tmp_name'], plugin_dir_path(__FILE__).'code/'.$arcane_nexus_filename.'.php')) {
 
-                if ($anmodel->insert_nexus($_POST['arcane_nexus_uri'], $arcane_nexus_filename, $_POST['arcane_nexus_position'])) $arcane_nexus_status = '<p class="an_text_green">Скрипт успешно добавлен к странице!</p>';
+                if ($anmodel->insert_nexus($_POST['arcane_nexus_uri'], $arcane_nexus_filename, $_POST['arcane_nexus_position'], $_POST['arcane_nexus_buffer'])) $arcane_nexus_status = '<p class="an_text_green">Скрипт успешно добавлен к странице!</p>';
                 else $arcane_nexus_status = '<p class="an_text_red">Не удалось добавить скрипт к странице! Скорее всего, к странице с указанным URI уже добавлен другой скрипт.</p>';
 
             } else $arcane_nexus_status = '<p class="an_text_red">Не удалось загрузить файл скрипта!</p>';
@@ -82,7 +82,7 @@ if (password_verify(ARCANE_NEXUS_PASSWORD, $_POST['arcane_nexus_hash']) && isset
 
             if (move_uploaded_file($_FILES['arcane_nexus_file']['tmp_name'], plugin_dir_path(__FILE__).'code/'.$arcane_nexus_filename.'.php')) {
 
-                if ($anmodel->update_nexus((int)$_POST['arcane_nexus_id'], $_POST['arcane_nexus_uri'], $arcane_nexus_filename, $_POST['arcane_nexus_position'])) {
+                if ($anmodel->update_nexus((int)$_POST['arcane_nexus_id'], $_POST['arcane_nexus_uri'], $arcane_nexus_filename, $_POST['arcane_nexus_position'], $_POST['arcane_nexus_buffer'])) {
 
                     unlink(plugin_dir_path(__FILE__).'code/'.$nexus_array[$_POST['arcane_nexus_id']]['file'].'.php');
                     
@@ -94,7 +94,7 @@ if (password_verify(ARCANE_NEXUS_PASSWORD, $_POST['arcane_nexus_hash']) && isset
 
         } else {
 
-            if ($anmodel->update_nexus((int)$_POST['arcane_nexus_id'], $_POST['arcane_nexus_uri'], $nexus_array[$_POST['arcane_nexus_id']]['file'], $_POST['arcane_nexus_position'])) $arcane_nexus_status = '<p class="an_text_green">Настройки добавления скрипта к странице успешно изменены!</p>';
+            if ($anmodel->update_nexus((int)$_POST['arcane_nexus_id'], $_POST['arcane_nexus_uri'], $nexus_array[$_POST['arcane_nexus_id']]['file'], $_POST['arcane_nexus_position'], $_POST['arcane_nexus_buffer'])) $arcane_nexus_status = '<p class="an_text_green">Настройки добавления скрипта к странице успешно изменены!</p>';
             else $arcane_nexus_status = '<p class="an_text_red">Не удалось изменить настройки добавления скрипта к странице! Меняя URI, пожалуйста, убедитесь, что страница с данным URI не имеет других прикреплённых скриптов.</p>';
 
         }
@@ -137,6 +137,10 @@ foreach (array_keys($nexus_array) as $id) {
                             <option value="mark">По метке</option>
                             <option value="off">Отключено</option>
                         </select></p>
+                        <p id="an_buffer_par"><span class="an_text_bolder">Буферизация:</span><br>
+                            <input type="radio" id="an_buffer_on" name="arcane_nexus_buffer" value="on" checked=""><span id="an_buffer_on_span">включена<br></span>
+                            <input type="radio" id="an_buffer_off" name="arcane_nexus_buffer" value="off"><span id="an_buffer_off_span">выключена</span>
+                        </p>
                         <p id="an_file_upload_par"><label for="an_file_upload"><a href="#" id="an_file_upload_label" onclick="document.querySelector('#an_file_upload').click();">Укажите файл с PHP-кодом на вашем компьютере</a></label><br>
                         <input type="file" accept=".php" id="an_file_upload" name="arcane_nexus_file" onchange="an_file_upload_label_check()" hidden></p>
 <?= '<input type="hidden" id="an_hash_input" name="arcane_nexus_hash" value="'.$arcane_nexus_hash.'">'."\n" ?>
@@ -153,7 +157,8 @@ foreach (array_keys($nexus_array) as $id) {
                         <li><p><span class="an_text_italic">*</span> — все страницы сайта.</p></li>
                     </ol>
                     <p>Если к странице подключается какой-то определённый скрипт, то тот скрипт, который предназначен для всех страниц сайта (т.е. подключаемый к URI *), на ней выполняться <span class="an_text_bolder">не будет</span>.</p>
-                    <p>Подключаемый скрипт выполняется в буфере, и на страницу, к которой он подключается, фактически попадает только результирующий HTML-поток, образуемый во время выполнения. Вывод HTML-потока относительно основного контента страницы должен подчиняться какой-то логике, и здесь есть четыре варианта: <span class="an_text_bolder">перед</span>, <span class="an_text_bolder">после</span>, <span class="an_text_bolder">замена</span> и <span class="an_text_bolder">вставка по метке</span> (в качестве метки используется блок <?= htmlspecialchars('<div id="mark_for_arcane_nexus"></div>') ?>). Также, через настройку положения результирующего HTML-потока можно <span class="an_text_bolder">отключить</span> исполнение скрипта на странице.</p>
+                    <p>Подключаемый скрипт выполняется в буфере, и на страницу, к которой он подключается, фактически попадает только результирующий HTML-поток, образуемый во время выполнения. Вывод HTML-потока относительно основного контента страницы должен подчиняться какой-то логике, и здесь есть четыре варианта: <span class="an_text_bolder">перед</span>, <span class="an_text_bolder">после</span>, <span class="an_text_bolder">замена</span> и <span class="an_text_bolder">вставка по метке</span> (метка — это пустой блок <span class="an_text_italic">div</span> c id <span class="an_text_italic">"mark_for_arcane_nexus"</span>; <span class="an_text_bolder">важно:</span> блок обязательно должен быть пустым, в нём не должно быть переходов на другую строку и пробелов). Также, через настройку положения результирующего HTML-потока можно <span class="an_text_bolder">отключить</span> исполнение скрипта на странице.</p>
+                    <p>Впрочем, <span class="an_text_bolder">буферизацию</span> тоже можно отключить. Это может быть полезно в том случае, если установлено много плагинов, фильтрующих контент страниц, и с ними возникают конфликты. Отключение буферизации может помочь их избежать, однако настройки положения, за исключением <span class="an_text_italic">Заменить</span> и <span class="an_text_italic">Отключено</span>, при отключенной буферизации учитываться не будут.</p>
                     <p>Удачи! :)</p>
                 </div>
             </div>

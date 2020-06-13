@@ -60,6 +60,11 @@ function an_view_update()
     var id = document.querySelector('#an_id_select').value;
     var uri = document.querySelector('#an_uri_input');
     var position = document.querySelector('#an_position_select');
+    var buffer_par = document.querySelector('#an_buffer_par');
+    var buffer_on = document.querySelector('#an_buffer_on');
+    var buffer_on_span = document.querySelector('#an_buffer_on_span');
+    var buffer_off = document.querySelector('#an_buffer_off');
+    var buffer_off_span = document.querySelector('#an_buffer_off_span');
     var file_upload_par = document.querySelector('#an_file_upload_par');
     var hash = document.querySelector('#an_hash_input').value;
     var status_block = document.querySelector('#an_status_block');
@@ -77,6 +82,30 @@ function an_view_update()
         if (document.querySelector('#an_file_download_delete_par')) document.querySelector('#an_file_download_delete_par').parentNode.removeChild(document.querySelector('#an_file_download_delete_par'));
 
         if (document.querySelector('#an_nexus_delete_a')) document.querySelector('#an_nexus_delete_a').parentNode.removeChild(document.querySelector('#an_nexus_delete_a'));
+
+        buffer_off.parentNode.removeChild(buffer_off);
+
+        buffer_off = document.createElement('input');
+        buffer_off.setAttribute('type', 'radio');
+        buffer_off.setAttribute('id', 'an_buffer_off');
+        buffer_off.setAttribute('name', 'arcane_nexus_buffer');
+        buffer_off.setAttribute('value', 'off');
+
+        buffer_par.appendChild(buffer_off);
+        buffer_par.insertBefore(document.querySelector('#an_buffer_off'), buffer_off_span);
+
+        buffer_on.parentNode.removeChild(buffer_on);
+
+        buffer_on = document.createElement('input');
+        buffer_on.setAttribute('type', 'radio');
+        buffer_on.setAttribute('id', 'an_buffer_on');
+        buffer_on.setAttribute('name', 'arcane_nexus_buffer');
+        buffer_on.setAttribute('value', 'on');
+        buffer_on.setAttribute('checked', '');
+
+        buffer_par.appendChild(buffer_on);
+        buffer_par.insertBefore(document.querySelector('#an_buffer_on'), buffer_on_span);
+
 
     } else {
         an_disable_form();
@@ -100,6 +129,70 @@ function an_view_update()
                 uri = document.querySelector('#an_uri_input');
                 uri.setAttribute('value', answer['data'][id]['uri']);
                 position.value = answer['data'][id]['position'];
+
+                if (answer['data'][id]['buffer'] == 'on') {
+
+                    buffer_off.parentNode.removeChild(buffer_off);
+
+                    buffer_off = document.createElement('input');
+                    buffer_off.setAttribute('type', 'radio');
+                    buffer_off.setAttribute('id', 'an_buffer_off');
+                    buffer_off.setAttribute('name', 'arcane_nexus_buffer');
+                    buffer_off.setAttribute('value', 'off');
+
+                    buffer_par.appendChild(buffer_off);
+
+                    buffer_off = document.querySelector('#an_buffer_off');
+
+                    buffer_par.insertBefore(buffer_off, buffer_off_span);
+
+                    buffer_on.parentNode.removeChild(buffer_on);
+
+                    buffer_on = document.createElement('input');
+                    buffer_on.setAttribute('type', 'radio');
+                    buffer_on.setAttribute('id', 'an_buffer_on');
+                    buffer_on.setAttribute('name', 'arcane_nexus_buffer');
+                    buffer_on.setAttribute('value', 'on');
+                    buffer_on.setAttribute('checked', '');
+
+                    buffer_par.appendChild(buffer_on);
+
+                    buffer_on = document.querySelector('#an_buffer_on');
+
+                    buffer_par.insertBefore(buffer_on, buffer_on_span);
+
+                } else {
+
+                    buffer_on.parentNode.removeChild(buffer_on);
+
+                    buffer_on = document.createElement('input');
+                    buffer_on.setAttribute('type', 'radio');
+                    buffer_on.setAttribute('id', 'an_buffer_on');
+                    buffer_on.setAttribute('name', 'arcane_nexus_buffer');
+                    buffer_on.setAttribute('value', 'on');
+
+                    buffer_par.appendChild(buffer_on);
+
+                    buffer_on = document.querySelector('#an_buffer_on');
+
+                    buffer_par.insertBefore(buffer_on, buffer_on_span);
+
+                    buffer_off.parentNode.removeChild(buffer_off);
+
+                    buffer_off = document.createElement('input');
+                    buffer_off.setAttribute('type', 'radio');
+                    buffer_off.setAttribute('id', 'an_buffer_off');
+                    buffer_off.setAttribute('name', 'arcane_nexus_buffer');
+                    buffer_off.setAttribute('value', 'off');
+                    buffer_off.setAttribute('checked', '');
+
+                    buffer_par.appendChild(buffer_off);
+
+                    buffer_off = document.querySelector('#an_buffer_off');
+
+                    buffer_par.insertBefore(buffer_off, buffer_off_span);
+
+                }
 
                 file_upload_par.setAttribute('hidden', true);
                 an_file_upload_clean();
@@ -153,6 +246,8 @@ function an_disable_form()
     document.querySelector('#an_position_select').setAttribute('disabled', true);
     document.querySelector('#an_file_upload').setAttribute('disabled', true);
     document.querySelector('#an_submit_button').setAttribute('disabled', true);
+    document.querySelector('#an_buffer_on').setAttribute('disabled', true);
+    document.querySelector('#an_buffer_off').setAttribute('disabled', true);
 
     if (document.querySelector('#an_file_download_delete_par')) document.querySelector('#an_file_download_delete_par').setAttribute('hidden', true);
 
@@ -169,6 +264,8 @@ function an_enable_form()
     document.querySelector('#an_position_select').removeAttribute('disabled');
     document.querySelector('#an_file_upload').removeAttribute('disabled');
     document.querySelector('#an_submit_button').removeAttribute('disabled');
+    document.querySelector('#an_buffer_on').removeAttribute('disabled');
+    document.querySelector('#an_buffer_off').removeAttribute('disabled');
 
     if (document.querySelector('#an_file_download_delete_par')) {    
         document.querySelector('#an_file_download_delete_par').removeAttribute('hidden');
