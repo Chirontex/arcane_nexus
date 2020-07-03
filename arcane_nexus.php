@@ -3,7 +3,7 @@
  * Plugin Name: Arcane Nexus
  * Plugin URI: https://github.com/dmitryshumilin/arcane_nexus
  * Description: Плагин, расширяющий возможности PHP-разработчиков в работе с WordPress.
- * Version: 1.5
+ * Version: 1.5.3
  * Author: Дмитрий Шумилин
  * Author URI: mailto://dmitri.shumilinn@yandex.ru
  */
@@ -90,12 +90,15 @@ if (!empty($nexus_array)) {
 
     foreach ($nexus_array as $id => $values) {
         
-        $trimmed_uri = trim($values['uri'], '/');
+        $user_uri = trim($values['uri'], '/');
 
-        if ($_SERVER['REQUEST_URI'] == '/') $server_request = 'index';
-        else $server_request = trim($_SERVER['REQUEST_URI'], '/');
+        if (strpos($_SERVER['REQUEST_URI'], '?') === false) $requested_uri = $_SERVER['REQUEST_URI'];
+        else $requested_uri = substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], '?'));
 
-        if ($trimmed_uri !== 'arcane_nexus_admin' && $trimmed_uri === $server_request) {
+        if ($requested_uri === '/') $requested_uri = 'index';
+        else $requested_uri = trim($requested_uri, '/');
+
+        if ($user_uri !== 'arcane_nexus_admin' && $user_uri === $requested_uri) {
 
             add_filter('the_content', 'an_nexus_execute', 100);
 
