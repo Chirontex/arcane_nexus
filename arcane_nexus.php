@@ -3,7 +3,7 @@
  * Plugin Name: Arcane Nexus
  * Plugin URI: https://github.com/dmitryshumilin/arcane_nexus
  * Description: Плагин, расширяющий возможности PHP-разработчиков в работе с WordPress.
- * Version: 1.5.3
+ * Version: 1.5.4
  * Author: Дмитрий Шумилин
  * Author URI: mailto://dmitri.shumilinn@yandex.ru
  */

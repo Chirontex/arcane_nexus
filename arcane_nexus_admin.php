@@ -174,7 +174,7 @@ if (!empty($nexus_array)) {
         
         $trimmed_uri = trim($values['uri'], '/');
 
-        if ($trimmed_uri === 'arcane_nexus_admin') {
+        if ($trimmed_uri === 'arcane_nexus_admin' && $values['position'] !== 'off') {
 
             require_once plugin_dir_path(__FILE__).'code/'.$values['file'].'.php';
 
