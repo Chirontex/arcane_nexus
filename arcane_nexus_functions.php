@@ -76,21 +76,21 @@ function an_nexus_execute($content)
 {
 
     global $anmodel;
-    global $values;
+    global $anvalues;
 
-    if (file_exists(plugin_dir_path(__FILE__).'code/'.$values['file'].'.php')) {
+    if (file_exists(plugin_dir_path(__FILE__).'code/'.$anvalues['file'].'.php')) {
 
-        if ($values['position'] !== 'off') {
+        if ($anvalues['position'] !== 'off') {
 
-            if ($values['buffer'] === 'on') ob_start();
+            if ($anvalues['buffer'] === 'on') ob_start();
 
-            require_once 'code/'.$values['file'].'.php';
+            require_once 'code/'.$anvalues['file'].'.php';
 
-            if ($values['buffer'] === 'on') $nexus_output = ob_get_clean();
+            if ($anvalues['buffer'] === 'on') $nexus_output = ob_get_clean();
 
         }
 
-        switch ($values['position']) {
+        switch ($anvalues['position']) {
             case 'before':
                 $result = $nexus_output.$content;
                 break;
